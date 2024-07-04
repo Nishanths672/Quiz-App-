@@ -1,1 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
 
+        #quiz-container {
+            width: 50%;
+            margin: auto;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        #pagination-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        #timer {
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        #score-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+      <h1> QUIZ </h1>
+        <form id="quiz-form">
+            <div id="questions-container"></div>
+            <div id="pagination-controls">
+                <button type="button" id="prev-button" onclick="prevPage()">Previous</button>
+                <button type="button" id="next-button" onclick="nextPage()">Next</button>
+            </div>
+            <div id="timer">Time Left: <span id="time">60</span> seconds</div>
+            <button type="button" id="submit-button" onclick="submitQuiz()">Submit</button>
+        </form>
+    </div>
+
+    <div id="score-popup" style="display: none;">
+        <p>Your score is: <span id="score"></span></p>
+        <button onclick="closePopup()">Close</button>
+    </div>
+
+    <script>
+        let currentPage = 0;
+        const questionsPerPage = 5;
+        const totalQuestions = 10; // Adjusted for 10 questions
+        const timeLimit = 60; // seconds
+        let timeLeft = timeLimit;
+        let timerInterval;
+
+        const questions = [
+            { question: "1. What is 2 + 2?", type: "text", answer: "4" },
+            { question: "2. Select the primary colors.", type: "checkbox", options: ["Red", "Green", "Blue", "Yellow"], answer: ["Red", "Blue", "Yellow"] },
+            { question: "3. What is the capital of France?", type: "text", answer: "Paris" },
+            { question: "4. Which is the largest planet?", type: "radio", options: ["Earth", "Jupiter", "Mars", "Venus"], answer: "Jupiter" },
+            { question: "5. Select the correct options", type: "dropdown", options: ["Option 1", "Option 2", "Option 3"], answer: "Option 2" },
+            { question: "6. What is 5 * 6?", type: "text", answer: "30" },
+            { question: "7. Select the colors of the rainbow.", type: "checkbox", options: ["Red", "Green", "Blue", "Yellow", "Pink", "Violet"], answer: ["Red", "Green", "Blue", "Yellow", "Violet"] },
+            { question: "8. What is the capital of Japan?", type: "text", answer: "Tokyo" },
+            { question: "9.Which is the smallest planet?", type: "radio", options: ["Earth", "Jupiter", "Mars", "Mercury"], answer: "Mercury" },
+            { question: "10.Select the correct number", type: "dropdown", options: ["One", "Two", "Three", "Four"], answer: "Three" },
+        ];
+
+        function loadQuestions() {
+            const start = currentPage * questionsPerPage;
+            const end = start + questionsPerPage;
+            const questionsContainer = document.getElementById('questions-container');
+            questionsContainer.innerHTML = '';
+
+            questions.slice(start, end).forEach((q, index) => {
+                const questionElement = document.createElement('div');
+                questionElement.className = 'question';
+                questionElement.innerHTML = `
+                    <p>${q.question}</p>
+                    ${getInputField(q, start + index)}
+                `;
+                questionsContainer.appendChild(questionElement);
+            });
+
+            document.getElementById('prev-button').style.display = currentPage === 0 ? 'none' : 'inline';
+            document.getElementById('next-button').style.display = currentPage === Math.floor((totalQuestions - 1) / questionsPerPage) ? 'none' : 'inline';
+        }
+
+        function getInputField(question, index) {
+            switch (question.type) {
+                case 'text':
+                    return `<input type="text" name="question-${index}" />`;
+                case 'checkbox':
+                    return question.options.map((opt, i) =>
+                        `<label><input type="checkbox" name="question-${index}" value="${opt}" />${opt}</label>`
+                    ).join('<br>');
+                case 'radio':
+                    return question.options.map((opt, i) =>
+                        `<label><input type="radio" name="question-${index}" value="${opt}" />${opt}</label>`
+                    ).join('<br>');
+                case 'dropdown':
+                    return `<select name="question-${index}">
+                        ${question.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                    </select>`;
+                default:
+                    return '';
+            }
+        }
+
+        function nextPage() {
+            if ((currentPage + 1) * questionsPerPage < totalQuestions) {
+                currentPage++;
+                loadQuestions();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                loadQuestions();
+            }
+        }
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            calculateScore();
+            document.getElementById('score-popup').style.display = 'block';
+        }
+
+        function calculateScore() {
+            let score = 0;
+            // Calculate the score based on user answers
+            // Example: if (userAnswer === correctAnswer) { score++; }
+
+            document.getElementById('score').innerText = score;
+        }
+
+        function closePopup() {
+            document.getElementById('score-popup').style.display = 'none';
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('time').innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadQuestions();
+            startTimer();
+        });
+    </script>
+</body>
+</html>
