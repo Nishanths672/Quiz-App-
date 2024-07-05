@@ -1,0 +1,58 @@
+[
+    {
+        "question": "1. What is 2 + 2?",
+        "type": "text",
+        "answer": "4"
+    },
+    {
+        "question": "2. Select the primary colors.",
+        "type": "checkbox",
+        "options": ["Red", "Green", "Blue", "Yellow"],
+        "answer": ["Red", "Blue", "Yellow"]
+    },
+    {
+        "question": "3. What is the capital of France?",
+        "type": "text",
+        "answer": "Paris"
+    },
+    {
+        "question": "4. Which is the largest planet?",
+        "type": "radio",
+        "options": ["Earth", "Jupiter", "Mars", "Venus"],
+        "answer": "Jupiter"
+    },
+    {
+        "question": "5. Select the correct options",
+        "type": "dropdown",
+        "options": ["Option 1", "Option 2", "Option 3"],
+        "answer": "Option 2"
+    },
+    {
+        "question": "6. What is 5 * 6?",
+        "type": "text",
+        "answer": "30"
+    },
+    {
+        "question": "7. Select the colors of the rainbow.",
+        "type": "checkbox",
+        "options": ["Red", "Green", "Blue", "Yellow", "Pink", "Violet"],
+        "answer": ["Red", "Green", "Blue", "Yellow", "Violet"]
+    },
+    {
+        "question": "8. What is the capital of Japan?",
+        "type": "text",
+        "answer": "Tokyo"
+    },
+    {
+        "question": "9.Which is the smallest planet?",
+        "type": "radio",
+        "options": ["Earth", "Jupiter", "Mars", "Mercury"],
+        "answer": "Mercury"
+    },
+    {
+        "question": "10.Select the correct number",
+        "type": "dropdown",
+        "options": ["One", "Two", "Three", "Four"],
+        "answer": "Three"
+    }
+]
